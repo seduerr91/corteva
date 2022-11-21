@@ -20,27 +20,29 @@ app = FastAPI()
 def on_startup() -> None:
 
     db = SessionLocal()
-    # Check if there are records in the database
-    print(f'Retrieving yield records ...')
-    yield_records = ingest.get_number_of_yield_entries(db)
+    # Check if there are records in the database, else ingest on startup.
+    yield_records = ingest.get_number_of_entries(db, models.Yields)
     if yield_records < 1:
         print(f'There are no yield records in DB. Starting ingesting yield data... (please find details in docs/ingestion.log).')
         yields_data = ingest.transform_yields_data_to_df()
-        ingest.yields_data_to_db(yields_data, db)
+        ingest.data_to_db(yields_data, models.Yields, db)
+
     else:
         print(f'There are {yield_records} yield records in DB.')
 
-    print(f'Retrieving weather records ...')
-    weather_records = ingest.get_number_of_weather_entries(db)
+    weather_records = ingest.get_number_of_entries(db, models.Weather)
     if weather_records < 1:
         print(f'There are no weather records in DB. Starting ingesting weather data, and calculating respective weather statistics. This will take a second (please find details in docs/ingestion.log).')
         weather_data = ingest.transform_weather_data_to_df()
-        ingest.weather_data_to_db(weather_data, db)
+
+        ingest.data_to_db(weather_data, models.Weather, db)
         db.query(models.WeatherStatistics).delete()
         db.commit()
         weather_statistics_data = ingest.transform_weatherStatistics_data_to_df(
             weather_data)
-        ingest.weather_statistics_data_to_db(weather_statistics_data, db)
+
+        ingest.data_to_db(weather_statistics_data,
+                          models.WeatherStatistics, db)
     else:
         print(f'There are {weather_records} weather records in DB.')
     db.flush()

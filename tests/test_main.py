@@ -4,16 +4,12 @@ from main import app
 
 client = TestClient(app)
 
-# test if server is runnable
 
-
-def test_read_main():
+def test_load_main():
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == [
         'Hi Corteva team, thank you for checking my assignment.']
-
-# get the first data point
 
 
 def test_get_weather_first_datapoint():
@@ -36,18 +32,27 @@ def test_get_weather_first_datapoint():
         }
     ]
 
-# get the total length of data points
 
-
-def test_get_weather_total_len_1729957():
+def test_get_weather_count():
     response = client.get("/api/weather/?page=1&size=1")
     assert response.status_code == 200
     assert [response.json()['total']] == [1729957]
 
-# filtering for a station
+
+def test_get_yield_count():
+    response = client.get("/api/yield/?page=1&size=1")
+    assert response.status_code == 200
+    assert [response.json()['total']] == [30]
+
+
+def test_get_weather_statistics_count():
+    response = client.get("/api/weather/stats/?page=1&size=1")
+    assert response.status_code == 200
+    assert [response.json()['total']] == [4820]
 
 
 def test_get_weather_filter_station_110072():
+    # testing my favorite station 110072 :)
     response = client.get("/api/weather/?stationId=110072&page=1&size=1")
     assert response.status_code == 200
     assert [response.json()] == [
@@ -67,39 +72,21 @@ def test_get_weather_filter_station_110072():
         }
     ]
 
-# filtering for a date & check length on that date
 
-
-# WEATHER_STATISTICS_TESTS
-
-# filtering for statistics # all elements in table
-def test_get_weather_stats():
-    response = client.get("/api/weather/stats/")
+def test_get_weather_stats_all_years_of_a_station():
+    response = client.get(
+        "api/weather/stats/?stationId=126580&page=1&size=50")
     assert response.status_code == 200
-    assert response.json()['total'] == 4820
-
-# Check random value
+    assert response.json()['total'] == 30
 
 
-def test_get_weather_stats_for_station_110072():
+def test_get_weather_stats_all_years_of_a_station_without_pagination_in_query_string():
     response = client.get("/api/weather/stats/?stationId=110072")
     assert response.status_code == 200
-
     assert response.json()['total'] == 30
 
 
-# YIELD_TESTS
-
-# get total length of yields in database
-def test_get_yield():
-    response = client.get("/api/yield/")
-    assert response.status_code == 200
-    assert response.json()['total'] == 30
-
-# test yield for year 1988 should be 125194
-
-
-def test_get_yield_for_1988():
+def test_get_yield_value_for_year_1988():
     response = client.get("http://127.0.0.1:8000/api/yield/?year=1988")
     assert response.status_code == 200
     assert response.json()['items'][0]['yields'] == 125194

@@ -100,39 +100,17 @@ def transform_weatherStatistics_data_to_df(weather_data):
     return weatherStatistics_data
 
 
-def get_number_of_yield_entries(db):
-    yield_records = db.query(models.Yields).count()
+def get_number_of_entries(db, model):
+    print(f'Retrieving {model} records ...')
+    records = db.query(model).count()
     logging.info(
-        f'At {time.strftime("%H:%M:%S")}, there are {yield_records} yield records in the database.')
-    return yield_records
+        f'At {time.strftime("%H:%M:%S")}, there are {records} for model {model} in the database.')
+    return records
 
 
-def get_number_of_weather_entries(db):
-    weather_records = db.query(models.Weather).count()
-    logging.info(
-        f'At {time.strftime("%H:%M:%S")}, there are {weather_records} weather records in the database.')
-    return weather_records
-
-
-def weather_data_to_db(weather_data, db):
+def data_to_db(data, model, db):
     db.bulk_insert_mappings(
-        models.Weather, weather_data.to_dict(orient="records"))
+        model, data.to_dict(orient="records"))
     logging.info(
-        f'Ended weather ingestion at {time.strftime("%H:%M:%S")}, and ingested {weather_data.shape[0]} records.')
-    db.commit()
-
-
-def yields_data_to_db(yields_data, db):
-    db.bulk_insert_mappings(
-        models.Yields, yields_data.to_dict(orient="records"))
-    logging.info(
-        f'Ended yield ingestion at {time.strftime("%H:%M:%S")} , and ingested {yields_data.shape[0]} records.')
-    db.commit()
-
-
-def weather_statistics_data_to_db(weather_statistics_data, db):
-    db.bulk_insert_mappings(
-        models.WeatherStatistics, weather_statistics_data.to_dict(orient="records"))
-    logging.info(
-        f'Ended weather statistics ingestion at {time.strftime("%H:%M:%S")}, and ingested {weather_statistics_data.shape[0]} records.')
+        f'Ended {data} ingestion at {time.strftime("%H:%M:%S")}, and ingested {data.shape[0]} records.')
     db.commit()
