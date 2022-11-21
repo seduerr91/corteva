@@ -5,8 +5,11 @@ from src import models
 
 
 def get_weather(db: Session, stationId: int, date: date):
-    if stationId == None:
+    if (stationId == None) and (date == None):
         return paginate(db.query(models.Weather))
+
+    if stationId == None:
+        return paginate(db.query(models.Weather).filter(models.Weather.date == date))
 
     if date == None:
         return paginate(db.query(models.Weather).filter(models.Weather.stationId == stationId))
@@ -14,8 +17,11 @@ def get_weather(db: Session, stationId: int, date: date):
 
 
 def get_weather_statistics(db: Session, stationId: int, year: int):
-    if stationId == None:
+    if (stationId == None) and (year == None):
         return paginate(db.query(models.WeatherStatistics))
+
+    if stationId == None:
+        return paginate(db.query(models.WeatherStatistics).filter(models.WeatherStatistics.year == year))
 
     if year == None:
         return paginate(db.query(models.WeatherStatistics).filter(models.WeatherStatistics.stationId == stationId))

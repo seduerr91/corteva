@@ -81,7 +81,7 @@ def test_get_weather_stats():
 # Check random value
 
 
-def test_get_weather_stats():
+def test_get_weather_stats_for_station_110072():
     response = client.get("/api/weather/stats/?stationId=110072")
     assert response.status_code == 200
 
@@ -99,7 +99,7 @@ def test_get_yield():
 # test yield for year 1988 should be 125194
 
 
-def test_get_yield():
+def test_get_yield_for_1988():
     response = client.get("http://127.0.0.1:8000/api/yield/?year=1988")
     assert response.status_code == 200
     assert response.json()['items'][0]['yields'] == 125194

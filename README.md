@@ -11,13 +11,13 @@ Please find the following aspects in this README.
 
 ## 1. Instructions on how to run / test the code of this repository
 
-- $ bash setup.sh: to install dependencies
-- $ bash run.sh: to start the FastAPI server, and ingest the data. Please interact with the server via localhost:8000/docs/ (compare giphy). The server can be stopped with 'control+c' on MacOS. Ingestion logs are provided in docs under ingestion.log.
-- $ bash tests.sh: to run the unit tests. Please find a report in docs/test_report.html. Attention: They only succeed if the run script, was run once since the database is only ingested in that process.
-- $ bash cleanup.sh: to remove all generated files to reset the project (i.e., database, test_report, logs).
-- $ bash docker.sh: Optionally run the server in a Docker container for easy deployment. (Please make sure you have Docker installed on your machine.)
+- $ bash bin/setup.sh: to install dependencies
+- $ bash bin/run.sh: to start the FastAPI server and ingest the data. Please interact with the server via localhost:8000/docs/. The server can be stopped with 'control+c' on MacOS. Ingestion logs are provided in docs under ingestion.log.
+- $ bash bin/tests.sh: to run the unit tests. Please find a report in docs/test_report.html. Attention: They only succeed if the run script, was run once since the database is only ingested in that process.
+- $ bash bin/cleanup.sh: to remove all generated files to reset the project (i.e., database, test_report, logs).
+- $ bash bin/docker.sh: Optionally run the server in a Docker container for easy deployment. (Please make sure you have Docker installed on your machine.)
   - Docker must be installed in order to use it. It can be downloaded from: <https://www.docker.com/>
-  - Once the container is running, you can open the CLI and run the tests in there, as the bash scripts are also avaible.
+  - Once the container is running, you can open the CLI and run the tests in there, as the bash scripts are also available.
 
 ## 2. My Approach
 
@@ -31,7 +31,7 @@ Please find the following aspects in this README.
 
 ### Answer to Problem 1: Data Modeling
 
-In this assingment, we'll use SQLite, because it uses a single file and Python has integrated support.
+In this assignment, we'll use SQLite because it uses a single file and Python has integrated support.
 The data models look as follows (from src/models.py):
 
 `
@@ -51,16 +51,16 @@ The data models look as follows (from src/models.py):
       yields = Column(Integer)
 `
 
-Please note, that stationId is an Integer, since I truncated the USC in every file. This is a design choice, and could be reversed quickly. This is an aspect I want to clarify (see open question at the end).
+Please note, that stationId is an Integer since I truncated the USC in every file. This is a design choice and can be reversed quickly. This is an aspect I want to clarify (see open question at the end).
 
 ### Answer to Problem 2: Ingestion
 
-The weather and field data will be ingested upon startup of the server. I used Pandas and Numpy extract (from txt files), transform (e.g. groupby functions) and load (bulk save to database) to ingest the database. The bulk approach was chosen to fill in the data since it is the most efficient use of Python. Duplicates are being checked in the transformation (implemented in pandas) earlier in the process.
+The weather and field data will be ingested upon startup of the server. I used Pandas and Numpy to extract (from txt files), transform (e.g. groupby functions) and load (bulk save to database) to ingest the database. The bulk approach was chosen to fill in the data since it is the most efficient use of Python. Duplicates are being checked in the transformation (implemented in Pandas) earlier in the process.
 Please note that the ingestion runs automatically upon server startup.
 
 ### Answer to Problem 3 - Data Analysis
 
-All calculations are being conducted in the file 'ingest.py', and carefully explained in docs/data_exploration.ipynb. Please refer to docs/data_exploration.ipynb for understanding my approach. Thank you.
+All calculations are being conducted in the file 'ingest.py' and carefully explained in docs/data_exploration.ipynb. Please refer to docs/data_exploration.ipynb for understanding my approach. Thank you.
 
 Please find the model definition below (from src/models.py):
 
@@ -77,9 +77,9 @@ Please find the model definition below (from src/models.py):
 
 ### Answer to Problem 4 - REST API
 
-As a web framework, I use FastAPI since it comes with an integrated openAPI front end that provides a convenient way to interact with the microservices (<http://localhost:8000/docs>). Flask and Django are also great options, and I would have been okay implementing this, if it would have been a requirement.
+As a web framework, I use FastAPI since it comes with an integrated openAPI front end that provides a convenient way to interact with the microservices (<http://localhost:8000/docs>). Flask and Django are also great options, and I would have been okay implementing this if it would have been a requirement.
 
-There are tests for the APIs, its results can be found in docs/report.html. You can run tests after the server was started, since the startup process only ingests the data base.
+There are tests for the APIs. The test results can be found in docs/report.html. You can run tests after the server was started since only the startup process ingests the data base.
 
 ## 4. Misc
 
@@ -93,3 +93,4 @@ The following resources helped a lot for compiling this repository:
 ## 5. Open questions
 
 - In the data, I removed the prefix of the stationId which was a redundant 'USC'. This allowed me to save the stationId as an Integer. Would you prefer the full String as a stationId?
+- From the prompt, I understand that I should return weather data based on the full date strings and the weather statistics and yield records data based on a year integer. Hence, this is what I built. Building an API to filter on day, month, and/or year would be a next step to mind when talking to an end user.
