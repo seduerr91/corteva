@@ -9,9 +9,16 @@ Please find the following aspects in this README.
 4. Misc
 5. Open Questions
 
-## Giphy of The Running Microservice
+## Illustration of Running Microservice
 
 ![Giphy](docs/fastapicortevachallenge.gif)
+
+## Quick instructions
+
+(1) Clone repository
+(2) Run $ bin/setup.sh in terminal to install dependencies (this is tested with Python 3.9, if you have incompatibilty problems, then please consider using Docker.)
+(3) Run $ bin/run.sh to ingest the data and run the microservice
+(4) Visit http://localhost:8000/docs to test the API with the UI
 
 ## 1. Instructions on how to run / test the code of this repository
 
@@ -62,7 +69,7 @@ Please note, that stationId is an Integer since I truncated the USC in every fil
 The weather and field data will be ingested upon startup of the server. I used Pandas and Numpy to extract (from txt files), transform (e.g. groupby functions) and load (bulk save to database) to ingest the database. The bulk approach was chosen to fill in the data since it is the most efficient use of Python. Duplicates are being checked in the transformation (implemented in Pandas) earlier in the process.
 Please note that the ingestion runs automatically upon server startup.
 
-### Answer to Problem 3 - Data Analysis
+### Answer to Problem 3: Data Analysis
 
 All calculations are being conducted in the file 'ingest.py' and carefully explained in docs/data_exploration.ipynb. Please refer to docs/data_exploration.ipynb for understanding my approach. Thank you.
 
@@ -79,7 +86,7 @@ Please find the model definition below (from src/models.py):
     precipitationSum = Column(Integer, nullable=True)
 `
 
-### Answer to Problem 4 - REST API
+### Answer to Problem 4: REST API
 
 As a web framework, I use FastAPI since it comes with an integrated openAPI front end that provides a convenient way to interact with the microservices (<http://localhost:8000/docs>). Flask and Django are also great options, and I would have been okay implementing this if it would have been a requirement.
 
