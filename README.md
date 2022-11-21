@@ -13,7 +13,7 @@ Please find the following aspects in this README.
 
 ![Giphy](docs/fastapicortevachallenge.gif)
 
-## Quick instructions
+Quick instructions
 
 1. Clone repository
 2. Run $ bin/setup.sh in terminal to install dependencies (this is tested with Python 3.9, if you have incompatibilty problems, then please consider using Docker.)
