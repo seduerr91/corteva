@@ -15,10 +15,10 @@ Please find the following aspects in this README.
 
 ## Quick instructions
 
-(1) Clone repository
-(2) Run $ bin/setup.sh in terminal to install dependencies (this is tested with Python 3.9, if you have incompatibilty problems, then please consider using Docker.)
-(3) Run $ bin/run.sh to ingest the data and run the microservice
-(4) Visit http://localhost:8000/docs to test the API with the UI
+1. Clone repository
+2. Run $ bin/setup.sh in terminal to install dependencies (this is tested with Python 3.9, if you have incompatibilty problems, then please consider using Docker.)
+3. Run $ bin/run.sh to ingest the data and run the microservice
+4. Visit http://localhost:8000/docs to test the API with the UI
 
 ## 1. Instructions on how to run / test the code of this repository
 
