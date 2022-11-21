@@ -9,6 +9,10 @@ Please find the following aspects in this README.
 4. Misc
 5. Open Questions
 
+## Giphy of The Running Microservice
+
+![Giphy](docs/fastapicortevachallenge.gif)
+
 ## 1. Instructions on how to run / test the code of this repository
 
 - $ bash bin/setup.sh: to install dependencies
