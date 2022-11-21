@@ -1,0 +1,1 @@
+uvicorn main:app --log-level trace --port 8000 

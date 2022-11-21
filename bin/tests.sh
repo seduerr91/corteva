@@ -1,0 +1,1 @@
+python3 -m pytest tests/test_main.py --html=docs/test_report.html --self-contained-html
